@@ -12,11 +12,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: Match3Sample
   m_EditorClassIdentifier: 
-  m_GroupName: Packed Assets
+  m_GroupName: Match3Sample
   m_Data:
     m_SerializedData: []
   m_GUID: a1a541042b964474caa126a8c0b0c84b
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 130d7c1e8cb36eb47914cc01f125d3c7
+    m_Address: Gimmick_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 224e72288c1f4ec4ba66ab1bb2bad26c
+    m_Address: Gimmick_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3df251c7047039c47970685cb388f6f6
+    m_Address: Gimmick_3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d7b14886fb2b1d4485af90bea8ad432
+    m_Address: BlockRed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 752c4a3c40411874388f4745d39e11b9
+    m_Address: BlockYellow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cd096baaa16af14cbd3cef04adb974a
+    m_Address: BlockBlue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9770ea7739bb4524a87a7d82145bb392
+    m_Address: BlockPurple
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caec32060aae4fb45a1109f580a800bf
+    m_Address: Gimmick_4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf28d7b8e87a1024f9704744cf4138ed
+    m_Address: BlockGreen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 590bc70361640bb429359c4d1cf990bd, type: 2}
   m_SchemaSet:

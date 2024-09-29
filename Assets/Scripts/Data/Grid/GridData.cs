@@ -103,7 +103,7 @@ namespace JH
                     CellData cell = ObjectPoolManager.Instance.GetCellData(TrGrid);
                     Vector2Int pos = CellIndex.IndexConvertToPos(i);
 
-                    cell.transform.localPosition = (Vector3Int)pos;
+                    cell.transform.localPosition = (Vector3Int)pos + new Vector3(-4f, -5f);
                     cell.LoadCellData(cellRoot, pos);
                     _cells[pos.y, pos.x] = cell;
                 }
