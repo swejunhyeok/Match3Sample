@@ -40,30 +40,30 @@ namespace JH
             #region Block properties
 
             public BlockData BottomBlock => _bottomBlock;
-            public bool IsContainBottomBlock => BottomBlock != null;
-            public BlockType BottomBlockType => IsContainBottomBlock && BottomBlock.IsContainAttribute ? BottomBlock.Attribute.Type : BlockType.None;
+            public bool HasBottomBlock => BottomBlock != null;
+            public BlockType BottomBlockType => HasBottomBlock && BottomBlock.HasAttribute ? BottomBlock.Attribute.Type : BlockType.None;
 
             public BlockData MiddleBlock => _middleBlock;
-            public bool IsContainMiddleBlock => MiddleBlock != null;
-            public BlockType MiddleBlockType => IsContainMiddleBlock && MiddleBlock.IsContainAttribute ? MiddleBlock.Attribute.Type : BlockType.None;
+            public bool HasMiddleBlock => MiddleBlock != null;
+            public BlockType MiddleBlockType => HasMiddleBlock && MiddleBlock.HasAttribute ? MiddleBlock.Attribute.Type : BlockType.None;
 
             public BlockData TopBlock => _topBlock;
-            public bool IsContainTopBlock => TopBlock != null;
-            public BlockType TopBlockType => IsContainTopBlock && TopBlock.IsContainAttribute ? TopBlock.Attribute.Type : BlockType.None;
+            public bool HasTopBlock => TopBlock != null;
+            public BlockType TopBlockType => HasTopBlock && TopBlock.HasAttribute ? TopBlock.Attribute.Type : BlockType.None;
 
             public BlockData HighestBlock
             {
                 get
                 {
-                    if(IsContainTopBlock)
+                    if(HasTopBlock)
                     {
                         return TopBlock;
                     }
-                    if(IsContainMiddleBlock)
+                    if(HasMiddleBlock)
                     {
                         return MiddleBlock;
                     }
-                    if(IsContainBottomBlock)
+                    if(HasBottomBlock)
                     {
                         return BottomBlock;
                     }
@@ -75,11 +75,23 @@ namespace JH
 
             #region Block manage
 
-            public BlockData CreateBlock(BlockKind kind, BlockType type)
+            public void CreateBlock(BlockKind kind, BlockType type)
             {
                 BlockData block = ObjectPoolManager.Instance.GetObjectData(kind, CellTransform);
 
-                return block;
+                block.SetAttribute(type);
+
+                AddBlock(block);
+            }
+            
+            public void AddBlock(BlockData block, bool isSetPivotCell = true)
+            {
+                if(block == null)
+                {
+                    return;
+                }
+                AddLayerBlock(block);
+                block.ChangePivotCell(Cell);
             }
 
             public void AddLayerBlock(BlockData block)
@@ -88,13 +100,13 @@ namespace JH
                 {
                     return;
                 }
-                if(!block.IsContainAttribute)
+                if(!block.HasAttribute)
                 {
                     return;
                 }
                 if(block.Attribute.IsBottomLayer)
                 {
-                    if(IsContainBottomBlock)
+                    if(HasBottomBlock)
                     {
                         return;
                     }
@@ -102,7 +114,7 @@ namespace JH
                 }
                 if(block.Attribute.IsMiddleLayer)
                 {
-                    if(IsContainMiddleBlock)
+                    if(HasMiddleBlock)
                     {
                         return;
                     }
@@ -110,7 +122,7 @@ namespace JH
                 }
                 if(block.Attribute.IsTopLayer)
                 {
-                    if(IsContainTopBlock)
+                    if(HasTopBlock)
                     {
                         return;
                     }

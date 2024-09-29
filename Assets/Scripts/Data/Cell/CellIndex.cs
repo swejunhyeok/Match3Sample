@@ -39,22 +39,27 @@ namespace JH
 
             #region Utils
 
-            public static bool Verification(Vector2Int pivot, Vector2Int direction, bool isContainGenerateCell = false)
+            public static bool Verification(Vector2Int pivot, Vector2Int direction, bool hasGenerateCell = false)
             {
-                return Verification(pivot + direction, isContainGenerateCell);
+                return Verification(pivot + direction, hasGenerateCell);
             }
 
-            public static bool Verification(Vector2Int position, bool isContainGenerateCell = false)
+            public static bool Verification(Vector2Int position, bool hasGenerateCell = false)
             {
                 if (position.x < 0 || position.x >= ConstantData.MAX_GRID_WIDTH_SIZE)
                 {
                     return false;
                 }
-                if (position.y < 0 || position.y >= ConstantData.MAX_GRID_HEIGHT_SIZE + (isContainGenerateCell ? 1 : 0))
+                if (position.y < 0 || position.y >= ConstantData.MAX_GRID_HEIGHT_SIZE + (hasGenerateCell ? 1 : 0))
                 {
                     return false;
                 }
                 return true;
+            }
+
+            public static Vector2Int IndexConvertToPos(int index)
+            {
+                return new Vector2Int(index % ConstantData.MAX_GRID_WIDTH_SIZE, index / ConstantData.MAX_GRID_WIDTH_SIZE);
             }
 
             #endregion

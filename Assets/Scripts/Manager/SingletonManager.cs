@@ -15,6 +15,10 @@ namespace JH
         {
             get
             {
+                if(_instance == null)
+                {
+                    Init();
+                }
                 return _instance;
             }
         }

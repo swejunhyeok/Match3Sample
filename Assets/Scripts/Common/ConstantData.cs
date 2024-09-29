@@ -21,6 +21,28 @@ namespace JH
 
             #endregion
 
+            #region Map
+
+            public static string MAP_KEY_MOVE = "move";
+            public static string MAP_KEY_GRID = "grid";
+
+            // mission
+            public static string MAP_KEY_MISSION_LIST = "msl";
+            public static string MAP_KEY_MISSION_TYPE = "mst";
+            public static string MAP_KEY_MISSION_NUM = "msn";
+
+            // cell
+            public static string MAP_KEY_CELL_LIST = "cs";
+            public static string MAP_KEY_CELL_TYPE = "ct";
+            public static string MAP_KEY_CELL_GENERATE_LIST = "gl";
+            public static string MAP_KEY_CELL_WEIGHT = "we";
+
+            // block
+            public static string MAP_KEY_BLOCK_LIST = "bts";
+            public static string MAP_KEY_BLOCK_TYPE = "bt";
+
+            #endregion
+
         }
     }
 }

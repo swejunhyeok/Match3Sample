@@ -8,6 +8,7 @@ namespace JH
     {
         public class CellData : Match3Data
         {
+
             #region Cell data
 
             public enum CellType
@@ -24,6 +25,11 @@ namespace JH
             
             public bool IsEmptyCell => _cellType == CellType.EmptyCell;
             public bool IsVisibleCell => _cellType == CellType.NormalCell || _cellType == CellType.FinishCell;
+            public bool IsGenerateCell => _cellType == CellType.GenerateCell;
+            public bool IsWorkCell => _cellType == CellType.NormalCell || _cellType == CellType.FinishCell || _cellType == CellType.GenerateCell;
+
+            [SerializeField]
+            private Vector2Int _pos;
 
             private CellData[] _fourDirectionCell = new CellData[4];
             public CellData[] FourDirectionCell => _fourDirectionCell;
@@ -50,16 +56,61 @@ namespace JH
             #region Cell component
 
             [SerializeField]
-            private CellState _state;
-            public CellState State => _state;
+            private CellState _cState;
+            public CellState CState => _cState;
 
             [SerializeField]
-            private CellBlock _block;
-            public CellBlock Block => _block;
+            private CellBlock _cBlock;
+            public CellBlock CBlock => _cBlock;
 
             [SerializeField]
-            private CellMove _move;
-            public CellMove Move => _move;
+            private CellMove _cMove;
+            public CellMove CMove => _cMove;
+
+            [SerializeField]
+            private GenerateCell _cGenerate;
+            public GenerateCell CGenerate => _cGenerate;
+
+            #endregion
+
+            #region Data load
+
+            public void LoadCellData(LitJson.JsonData cellRoot, Vector2Int pos)
+            {
+                _pos = pos;
+
+                _cellType = (CellType)InGameUtil.ParseInt(ref cellRoot, ConstantData.MAP_KEY_CELL_TYPE, 1);
+                if(IsGenerateCell)
+                {
+                    CGenerate.LoadGenerateData(cellRoot[ConstantData.MAP_KEY_CELL_GENERATE_LIST]);
+                }
+            }
+
+            public void LoadBlockData(LitJson.JsonData cellRoot)
+            {
+                if(IsEmptyCell)
+                {
+                    return;
+                }
+
+                if(!cellRoot.Keys.Contains(ConstantData.MAP_KEY_BLOCK_LIST))
+                {
+                    return;
+                }
+
+                LitJson.JsonData blocksData = cellRoot[ConstantData.MAP_KEY_BLOCK_LIST];
+
+                for(int i = 0; i < blocksData.Count; ++i)
+                {
+                    LitJson.JsonData blockData = blocksData[i];
+                    BlockType type = (BlockType)InGameUtil.ParseInt(ref blockData, ConstantData.MAP_KEY_BLOCK_TYPE, 0);
+                    BlockAttribute attribute = AddressableManager.Instance.GetBlockAttribute(type);
+                    if (attribute != null)
+                    {
+                        CBlock.CreateBlock(attribute.Kind, type);
+                    }
+                }
+            }
 
             #endregion
 
@@ -72,19 +123,25 @@ namespace JH
                 CellState state = GetComponent<CellState>();
                 if(state != null)
                 {
-                    _state = state;
+                    _cState = state;
                 }
 
                 CellBlock block = GetComponent<CellBlock>();
                 if(block != null)
                 {
-                    _block = block;
+                    _cBlock = block;
                 }
 
                 CellMove move = GetComponent<CellMove>();
                 if (move != null)
                 {
-                    _move = move;
+                    _cMove = move;
+                }
+
+                GenerateCell generate = GetComponent<GenerateCell>();
+                if(generate != null)
+                {
+                    _cGenerate = generate;
                 }
             }
 

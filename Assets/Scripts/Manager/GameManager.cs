@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LitJson;
 
 namespace JH
 {
@@ -22,6 +23,13 @@ namespace JH
                     Destroy(gameObject);
                 }
             }
+
+            #endregion
+
+            #region Unity component
+
+            [SerializeField]
+            private Transform _trLevel;
 
             #endregion
 
@@ -71,7 +79,7 @@ namespace JH
                     {
                         return ConstantData.POS_ERROR_VALUE;
                     }
-                    return Grid.transform.position;
+                    return Grid.TrGrid.position;
                 }
             }
 
@@ -137,7 +145,23 @@ namespace JH
 
             private void LoadData()
             {
+                TextAsset mapFile = Resources.Load<TextAsset>("LevelData/Sample");
+                if(mapFile == null)
+                {
+                    return;
+                }
+                JsonData root = JsonMapper.ToObject(mapFile.text);
 
+                // Move load
+                Move = InGameUtil.ParseInt(ref root, ConstantData.MAP_KEY_MOVE, 0);
+
+                // Grid load
+                LitJson.JsonData gridRoot = root[ConstantData.MAP_KEY_GRID];
+                _grid = Instantiate(_prefabGrid, _trLevel).GetComponent<GridData>();
+                _grid.transform.localPosition = Vector3.zero;
+                _grid.LoadGridData(gridRoot);
+
+                MissionManager.Instance.LoadMissions(gridRoot[ConstantData.MAP_KEY_MISSION_LIST]);
             }
 
             #endregion

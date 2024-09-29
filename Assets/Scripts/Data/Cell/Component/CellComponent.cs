@@ -25,7 +25,7 @@ namespace JH
 
 #if UNITY_EDITOR
 
-            private void RegistCell()
+            protected void RegistCell()
             {
                 CellData cell = GetComponent<CellData>();
                 if(cell == null)
@@ -35,7 +35,7 @@ namespace JH
                 _cell = cell;
             }
 
-            private void Reset()
+            protected virtual void Reset()
             {
                 RegistCell();
             }

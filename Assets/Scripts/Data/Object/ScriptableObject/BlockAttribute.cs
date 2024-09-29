@@ -18,17 +18,15 @@ namespace JH
             BlockYellow,
             BlockGreen,
             BlockPurple,
-            BlockRandom,
 
             ___SpecialBlock___ = 1001,
 
 
             ___Gimmick___ = 2001,
-            PaperBox_1,
-            PaperBox_2,
-            PaperBox_3,
-            PaperBox_4,
-            PaparBox_5,
+            Gimmick_1,
+            Gimmick_2,
+            Gimmick_3,
+            Gimmick_4
         }
 
         public enum BlockKind
@@ -42,14 +40,16 @@ namespace JH
         [System.Flags]
         public enum LayerType
         {
-            Board,
-            Bottom = 10,
-            Middle = 20,
-            Top = 30,
+            None = 0x000,
+            Board = 0x001,
+            Bottom = 0x002,
+            Middle = 0x004,
+            Top = 0x008,
         }
 
         public enum ColorType
         {
+            None,
             Red,
             Blue,
             Yellow,
@@ -59,23 +59,28 @@ namespace JH
 
         public enum MissionType
         {
+            None,
             PaperBox
         }
 
         [System.Flags]
         public enum HitConditionType
         {
-            None,
-            ArroundMatch,
-            InnerMatch,
-            Powerup
+            None = 0x000,
+            ArroundMatch = 0x001,
+            InnerMatch = 0x002,
+            Powerup = 0x004,
+            Match = 0x008,
+            Touch = 0x010,
         }
 
+        [System.Flags]
         public enum HitEffectType
         {
-            None,
-            Change,
-            ReduceMission
+            None = 0x000,
+            Change = 0x001,
+            ReduceMission = 0x002,
+            Destroy = 0x004,
         }
 
         [CreateAssetMenu(fileName = "Block Attribute", menuName = "JH/Match3Sample/Block Attribute")]
@@ -157,6 +162,13 @@ namespace JH
             public bool IsMatchAble
             {
                 get => _isMatchAble;
+            }
+
+            [SerializeField]
+            private bool _isMoveAble;
+            public bool IsMoveAble
+            {
+                get => _isMoveAble;
             }
 
             #endregion

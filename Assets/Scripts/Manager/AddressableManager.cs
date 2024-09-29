@@ -31,23 +31,23 @@ namespace JH
 
             #endregion
 
-            #region Gimmick attribute
+            #region Block attribute
 
-            private Dictionary<int, BlockAttribute> _dicGimmickAttributes = new Dictionary<int, BlockAttribute>();
-            public BlockAttribute GetGimmickAttribute(BlockType type)
+            private Dictionary<int, BlockAttribute> _dicBlockAttributes = new Dictionary<int, BlockAttribute>();
+            public BlockAttribute GetBlockAttribute(BlockType type)
             {
                 int typeId = (int)type;
-                if(_dicGimmickAttributes.ContainsKey(typeId))
+                if(_dicBlockAttributes.ContainsKey(typeId))
                 {
-                    return _dicGimmickAttributes[typeId];
+                    return _dicBlockAttributes[typeId];
                 }
 
                 var op = Addressables.LoadAssetAsync<BlockAttribute>(type.ToString());
-                BlockAttribute gimmickAttribute = op.WaitForCompletion();
+                BlockAttribute BlockAttribute = op.WaitForCompletion();
 
-                _dicGimmickAttributes.Add(typeId, gimmickAttribute);
+                _dicBlockAttributes.Add(typeId, BlockAttribute);
 
-                return gimmickAttribute;
+                return BlockAttribute;
             }
             #endregion
 

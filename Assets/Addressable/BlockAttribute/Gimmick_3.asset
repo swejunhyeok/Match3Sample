@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf460e9458eddac4ca836f9972a5426b, type: 3}
+  m_Name: Gimmick_3
+  m_EditorClassIdentifier: 
+  _type: 2004
+  _kind: 3
+  _layer: 4
+  _size: {x: 1, y: 1}
+  _health: 3
+  _color: 0
+  _sprBlock: {fileID: 0}
+  _isMatchAble: 0
+  _isMoveAble: 0
+  _hitCondition: 5
+  _hitEffect: 1
+  _mission: 1
+  _hitChangeGimmick: {fileID: 11400000, guid: 130d7c1e8cb36eb47914cc01f125d3c7, type: 2}
