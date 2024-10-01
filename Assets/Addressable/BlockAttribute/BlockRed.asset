@@ -21,6 +21,7 @@ MonoBehaviour:
   _sprBlock: {fileID: 21300000, guid: e18197fcde0f5a04e955021a116feb14, type: 3}
   _isMatchAble: 1
   _isMoveAble: 1
+  _isSwapAble: 1
   _hitCondition: 12
   _hitEffect: 4
   _mission: 0

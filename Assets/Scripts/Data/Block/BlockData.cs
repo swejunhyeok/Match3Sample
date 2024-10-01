@@ -39,35 +39,139 @@ namespace JH
 
             [SerializeField]
             private CellData _pivotCell;
+            public CellData PivotCell => _pivotCell;
 
             #endregion
 
             #region Block component
 
             [SerializeField]
-            private BlockHit _bHit;
-            public BlockHit BHit => _bHit;
-            public bool HasHit => BHit != null;
+            private BlockCache _cache;
+            public BlockCache Cache => _cache;
+            public bool HasCache => _cache != null;
 
             [SerializeField]
-            private BlockMatch _bMatch;
-            public BlockMatch BMatch => _bMatch;
-            public bool HasMatch => BMatch != null;
+            private BlockHit _hit;
+            public BlockHit Hit => _hit;
+            public bool HasHit => Hit != null;
 
             [SerializeField]
-            private BlockMove _bMove;
-            public BlockMove BMove => _bMove;
-            public bool HasMove => BMove != null;
+            private BlockMatch _match;
+            public BlockMatch Match => _match;
+            public bool HasMatch => Match != null;
 
             [SerializeField]
-            private BlockState _bState;
-            public BlockState BState => _bState;
-            public bool HasState => BState != null;
+            private BlockMove _move;
+            public BlockMove Move => _move;
+            public bool HasMove => Move != null;
 
             [SerializeField]
-            private BlockSprite _bSprite;
-            public BlockSprite BSprite => _bSprite;
-            public bool HasSprite => BSprite != null;
+            private BlockState _state;
+            public BlockState State => _state;
+            public bool HasState => State != null;
+
+            [SerializeField]
+            private BlockSprite _sprite;
+            public BlockSprite Sprite => _sprite;
+            public bool HasSprite => Sprite != null;
+
+            #endregion
+
+            #region Block state
+
+            public bool IsWillBeUnderMove
+            {
+                get
+                {
+                    if(PivotCell == null)
+                    {
+                        return false;
+                    }
+                    if(Attribute == null)
+                    {
+                        return false;
+                    }
+                    if(!Attribute.IsMoveAble)
+                    {
+                        return false;
+                    }
+                    if(PivotCell.DownCell == null)
+                    {
+                        return false;
+                    }
+                    if(PivotCell.Block.HasMiddleBlock)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+
+            #endregion
+
+            #region General
+
+            public override void Init()
+            {
+                base.Init();
+                _pivotCell = null;
+                if(HasCache)
+                {
+                    Cache.Initialize();
+                }
+                if(HasHit)
+                {
+                    Hit.Initialize();
+                }
+                if(HasMatch)
+                {
+                    Match.Initialize();
+                }
+                if(HasMove)
+                {
+                    Move.Initialize();
+                }
+                if(HasSprite)
+                {
+                    Sprite.Initialize();
+                }
+                if(HasState)
+                {
+                    State.Initialize();
+                }
+            }
+
+            public override void Dispose(bool isForce = false)
+            {
+                base.Dispose(isForce);
+                if (HasCache)
+                {
+                    Cache.Dispose();
+                }
+                if (HasHit)
+                {
+                    Hit.Dispose();
+                }
+                if (HasMatch)
+                {
+                    Match.Dispose();
+                }
+                if (HasMove)
+                {
+                    Move.Dispose();
+                }
+                if (HasSprite)
+                {
+                    Sprite.Dispose();
+                }
+                if (HasState)
+                {
+                    State.Dispose();
+                }
+
+                _pivotCell = null;
+                ObjectPoolManager.Instance.Dispose(this);
+            }
 
             #endregion
 
@@ -89,7 +193,7 @@ namespace JH
             {
                 if(HasSprite)
                 {
-                    BSprite.SetSprite(_attribute.SprBlock);
+                    Sprite.SetSprite(_attribute.SprBlock);
                 }
             }
 
@@ -110,34 +214,40 @@ namespace JH
 
             private void Reset()
             {
+                BlockCache cache = GetComponent<BlockCache>();
+                if(cache != null)
+                {
+                    _cache = cache;
+                }
+
                 BlockHit hit = GetComponent<BlockHit>();
                 if(hit != null)
                 {
-                    _bHit = hit;
+                    _hit = hit;
                 }
 
                 BlockMatch match = GetComponent<BlockMatch>();
                 if(match != null)
                 {
-                    _bMatch = match;
+                    _match = match;
                 }
 
                 BlockMove move = GetComponent<BlockMove>();
                 if(move != null)
                 {
-                    _bMove = move;
+                    _move = move;
                 }
 
                 BlockState state = GetComponent<BlockState>();
                 if(state != null)
                 {
-                    _bState = state;
+                    _state = state;
                 }
 
                 BlockSprite sprite = GetComponent<BlockSprite>();
                 if(sprite != null)
                 {
-                    _bSprite = sprite;
+                    _sprite = sprite;
                 }
             }
 

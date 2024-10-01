@@ -17,6 +17,20 @@ namespace JH
 
             #endregion
 
+            #region General
+
+            public virtual void Initialize()
+            {
+
+            }
+
+            public virtual void Dispose()
+            {
+
+            }
+
+            #endregion
+
             #region Editor
 
 #if UNITY_EDITOR

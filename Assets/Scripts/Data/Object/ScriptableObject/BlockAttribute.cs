@@ -171,6 +171,13 @@ namespace JH
                 get => _isMoveAble;
             }
 
+            [SerializeField]
+            private bool _isSwapAble;
+            public bool IsSwapAble
+            {
+                get => _isMatchAble;
+            }
+
             #endregion
 
             #region Hit

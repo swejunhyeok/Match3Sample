@@ -104,7 +104,7 @@ namespace JH
                     Vector2Int pos = CellIndex.IndexConvertToPos(i);
 
                     cell.transform.localPosition = (Vector3Int)pos + new Vector3(-4f, -5f);
-                    cell.LoadCellData(cellRoot, pos);
+                    cell.LoadCellData(cellRoot, pos, i);
                     _cells[pos.y, pos.x] = cell;
                 }
 
@@ -118,6 +118,78 @@ namespace JH
                 SetArroundCell();
             }
 
+
+            #endregion
+
+            #region Input
+
+            public bool VerificationSwap(Vector2Int pivotPos, Vector2Int direction)
+            {
+                if(!CellIndex.Verification(pivotPos))
+                {
+                    return false;
+                }
+
+                if(!CellIndex.Verification(pivotPos, direction))
+                {
+                    return false;
+                }
+
+                if(!GetCell(pivotPos).Block.IsSwapAble)
+                {
+                    return false;
+                }
+
+                if(!GetCell(pivotPos + direction).Block.IsSwapAble && !GetCell(pivotPos + direction).Block.IsEmpty)
+                {
+                    return false;
+                }
+
+                if(!GetCell(pivotPos).Block.HasMoveAbleBlock && !GetCell(pivotPos + direction).Block.HasMoveAbleBlock)
+                {
+                    return false;
+                }
+
+                if(GetCell(pivotPos).Block.IsEmpty && GetCell(pivotPos + direction).Block.IsEmpty)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public void InputSwap(Vector2Int pivotPos, Vector2Int direction)
+            {
+                CellData pivotCell = GetCell(pivotPos);
+                CellData targetCell = GetCell(pivotPos + direction);
+
+                if(pivotCell.Block.HasSwapAbleBlock)
+                {
+                    GameManager.Instance.AddWaitingSwapNum();
+                    pivotCell.State.AddHoldState();
+                    targetCell.State.AddHoldState();
+                    pivotCell.Block.SwapAbleBlock.Cache.MoveEndAction += () =>
+                    {
+                        GameManager.Instance.ReduceWaitingSwapNum();
+                        pivotCell.State.ReduceHoldState();
+                        targetCell.State.ReduceHoldState();
+                    };
+                }
+                if(targetCell.Block.HasSwapAbleBlock)
+                {
+                    GameManager.Instance.AddWaitingSwapNum();
+                    pivotCell.State.AddHoldState();
+                    targetCell.State.AddHoldState();
+                    targetCell.Block.SwapAbleBlock.Cache.MoveEndAction += () =>
+                    {
+                        GameManager.Instance.ReduceWaitingSwapNum();
+                        pivotCell.State.ReduceHoldState();
+                        targetCell.State.ReduceHoldState();
+                    };
+                }
+
+
+            }
 
             #endregion
 

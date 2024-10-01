@@ -12,7 +12,8 @@ namespace JH
             {
                 Idle,
                 Move,
-                Destroied,
+                Match,
+                Destroyed,
             }
 
             [SerializeField]
@@ -23,7 +24,23 @@ namespace JH
             {
                 _state = state;
             }
-            
+
+            #region General
+
+            public override void Initialize()
+            {
+                base.Initialize();
+                _state = BlockStateType.Idle;
+            }
+
+            public override void Dispose()
+            {
+                base.Dispose();
+                _state = BlockStateType.Destroyed;
+            }
+
+            #endregion
+
         }
     }
 }

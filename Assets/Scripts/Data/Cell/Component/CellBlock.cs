@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace JH
@@ -37,6 +38,34 @@ namespace JH
 
             #endregion
 
+            #region Block specific properties
+
+            public bool IsSwapAble
+            {
+                get
+                {
+                    if(!Cell.IsVisibleCell)
+                    {
+                        return false;
+                    }
+                    if(Cell.State.IsHold)
+                    {
+                        return false;
+                    }
+                    if(HasTopBlock)
+                    {
+                        return false;
+                    }
+                    if(!HasSwapAbleBlock)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+
+            #endregion
+
             #region Block properties
 
             public BlockData BottomBlock => _bottomBlock;
@@ -51,6 +80,70 @@ namespace JH
             public bool HasTopBlock => TopBlock != null;
             public BlockType TopBlockType => HasTopBlock && TopBlock.HasAttribute ? TopBlock.Attribute.Type : BlockType.None;
 
+            public BlockData MoveAbleBlock
+            {
+                get
+                {
+                    if (!HasMiddleBlock)
+                    {
+                        return null;
+                    }
+                    if (!MiddleBlock.HasAttribute)
+                    {
+                        return null;
+                    }
+                    if (!MiddleBlock.Attribute.IsMoveAble)
+                    {
+                        return null;
+                    }
+                    return MiddleBlock;
+                }
+            }
+            public BlockData SwapAbleBlock
+            {
+                get
+                {
+                    if (!HasMiddleBlock)
+                    {
+                        return null;
+                    }
+                    if (!MiddleBlock.HasAttribute)
+                    {
+                        return null;
+                    }
+                    if (!MiddleBlock.Attribute.IsSwapAble)
+                    {
+                        return null;
+                    }
+                    return MiddleBlock;
+                }
+            }
+
+            public bool IsEmpty
+            {
+                get
+                {
+                    if(!Cell.IsVisibleCell)
+                    {
+                        return false;
+                    }
+                    if(_bottomBlock != null)
+                    {
+                        return false;
+                    }
+                    if(_middleBlock != null)
+                    {
+                        return false;
+                    }
+                    if(_topBlock != null)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            public bool HasMoveAbleBlock => MoveAbleBlock != null;
+            public bool HasSwapAbleBlock => SwapAbleBlock != null;
             public BlockData HighestBlock
             {
                 get
@@ -149,6 +242,41 @@ namespace JH
                 {
                     _topBlock = null;
                 }
+            }
+
+            #endregion
+
+            #region Match
+
+            public int MatchPreprocessing(bool isSwap = false)
+            {
+                int matchCandidateValue = 0;
+                if(!HasMiddleBlock)
+                {
+                    return matchCandidateValue;
+                }
+                if(!MiddleBlock.HasAttribute)
+                {
+                    return matchCandidateValue;
+                }
+                if(MiddleBlock.Attribute.Color == ColorType.None)
+                {
+                    return matchCandidateValue;
+                }
+                if(!MiddleBlock.HasMatch)
+                {
+                    return matchCandidateValue;
+                }
+                return MiddleBlock.Match.MatchPreprocessing(isSwap);
+            }
+
+            public BlockMatch.MatchData MatchCheck(BlockMatch.BlockMatchType type, bool isSwap = false)
+            {
+                if(!HasMiddleBlock || !MiddleBlock.HasMatch)
+                {
+                    return new BlockMatch.MatchData() { Type = BlockMatch.BlockMatchType.None };
+                }
+                return MiddleBlock.Match.MatchSearch(type, isSwap);
             }
 
             #endregion

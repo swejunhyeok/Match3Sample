@@ -30,6 +30,11 @@ namespace JH
 
             [SerializeField]
             private Vector2Int _pos;
+            public Vector2Int Pos => _pos;
+
+            [SerializeField]
+            private int _index;
+            public int Index => _index;
 
             private CellData[] _fourDirectionCell = new CellData[4];
             public CellData[] FourDirectionCell => _fourDirectionCell;
@@ -56,33 +61,34 @@ namespace JH
             #region Cell component
 
             [SerializeField]
-            private CellState _cState;
-            public CellState CState => _cState;
+            private CellState _state;
+            public CellState State => _state;
 
             [SerializeField]
-            private CellBlock _cBlock;
-            public CellBlock CBlock => _cBlock;
+            private CellBlock _block;
+            public CellBlock Block => _block;
 
             [SerializeField]
-            private CellMove _cMove;
-            public CellMove CMove => _cMove;
+            private CellMove _move;
+            public CellMove Move => _move;
 
             [SerializeField]
-            private GenerateCell _cGenerate;
-            public GenerateCell CGenerate => _cGenerate;
+            private GenerateCell _generate;
+            public GenerateCell Generate => _generate;
 
             #endregion
 
             #region Data load
 
-            public void LoadCellData(LitJson.JsonData cellRoot, Vector2Int pos)
+            public void LoadCellData(LitJson.JsonData cellRoot, Vector2Int pos, int index)
             {
                 _pos = pos;
+                _index = index;
 
                 _cellType = (CellType)InGameUtil.ParseInt(ref cellRoot, ConstantData.MAP_KEY_CELL_TYPE, 1);
                 if(IsGenerateCell)
                 {
-                    CGenerate.LoadGenerateData(cellRoot[ConstantData.MAP_KEY_CELL_GENERATE_LIST]);
+                    Generate.LoadGenerateData(cellRoot[ConstantData.MAP_KEY_CELL_GENERATE_LIST]);
                 }
             }
 
@@ -107,7 +113,7 @@ namespace JH
                     BlockAttribute attribute = AddressableManager.Instance.GetBlockAttribute(type);
                     if (attribute != null)
                     {
-                        CBlock.CreateBlock(attribute.Kind, type);
+                        Block.CreateBlock(attribute.Kind, type);
                     }
                 }
             }
@@ -123,25 +129,25 @@ namespace JH
                 CellState state = GetComponent<CellState>();
                 if(state != null)
                 {
-                    _cState = state;
+                    _state = state;
                 }
 
                 CellBlock block = GetComponent<CellBlock>();
                 if(block != null)
                 {
-                    _cBlock = block;
+                    _block = block;
                 }
 
                 CellMove move = GetComponent<CellMove>();
                 if (move != null)
                 {
-                    _cMove = move;
+                    _move = move;
                 }
 
                 GenerateCell generate = GetComponent<GenerateCell>();
                 if(generate != null)
                 {
-                    _cGenerate = generate;
+                    _generate = generate;
                 }
             }
 

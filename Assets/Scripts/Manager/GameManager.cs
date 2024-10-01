@@ -60,6 +60,30 @@ namespace JH
                 set => _colorBlockNum = value;
             }
 
+            [SerializeField]
+            private int _waitingSwapNum = 0;
+            public void AddWaitingSwapNum() => ++_waitingSwapNum;
+            public void ReduceWaitingSwapNum() => --_waitingSwapNum;
+            public bool IsWaitingSwap => _waitingSwapNum > 0;
+
+            [SerializeField]
+            private List<int> _runningRainbowEffect = new List<int>();
+            public void AddRunningRainbowEffect(int colorIndex)
+            {
+                if (!IsExistRunningRainbowEffect(colorIndex))
+                {
+                    _runningRainbowEffect.Add(colorIndex);
+                }
+            }
+            public void RemoveRunningRainbowEffect(int colorIndex)
+            {
+                _runningRainbowEffect.Remove(colorIndex);
+            }
+            public bool IsExistRunningRainbowEffect(int colorIndex)
+            {
+                return _runningRainbowEffect.IndexOf(colorIndex) != -1;
+            }
+
             #endregion
 
             #region Grid data
@@ -118,6 +142,20 @@ namespace JH
                 Processing_UserInput = 0x00000010,
                 Stop_Checking = 0x00000020,
                 Done_GameEnd = 0x00000040,
+            }
+
+            [SerializeField]
+            private GameState _state;
+            public GameState State => _state;
+
+            public void AddGameState(GameState state)
+            {
+                _state |= state;
+            }
+
+            public void RemoveGameState(GameState state)
+            {
+                _state &= ~state;
             }
 
             #endregion
@@ -284,7 +322,14 @@ namespace JH
                     }
                 }
 
+                if(!Grid.VerificationSwap(_targetCellPos, direction))
+                {
+                    _targetCellPos = CellIndex.None;
+                    return;
+                }
 
+                Grid.InputSwap(_targetCellPos, direction);
+                _targetCellPos = CellIndex.None;
             }
 
             #endregion

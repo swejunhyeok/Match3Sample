@@ -9,6 +9,18 @@ namespace JH
         public class CellState : CellComponent
         {
 
+            #region Hold
+
+            [SerializeField]
+            private int _cntHold = 0;
+            
+            public bool IsHold => _cntHold > 0;
+
+            public void AddHoldState() { ++_cntHold; }
+            public void ReduceHoldState() { --_cntHold; }
+
+            #endregion
+
         }
     }
 }

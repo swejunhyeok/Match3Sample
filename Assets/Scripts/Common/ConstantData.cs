@@ -17,7 +17,7 @@ namespace JH
 
             public static Vector2 POS_ERROR_VALUE = new Vector2(int.MinValue, int.MinValue);
 
-
+            public static int MATCH_SEARCH_SPACE = 2;
 
             #endregion
 
