@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf460e9458eddac4ca836f9972a5426b, type: 3}
-  m_Name: BlockGreen
+  m_Name: Rainbow
   m_EditorClassIdentifier: 
-  _type: 5
-  _kind: 1
+  _type: 1006
+  _kind: 2
   _layer: 4
   _size: {x: 1, y: 1}
   _health: 1
-  _color: 4
-  _sprBlock: {fileID: 21300000, guid: 03c38a21d4f2f0c4f81c378b38742d11, type: 3}
-  _isMatchAble: 1
+  _color: 0
+  _sprBlock: {fileID: 21300000, guid: ea3a31d63da49ba45b2c2e1f24c15d7d, type: 3}
+  _isMatchAble: 0
   _isMoveAble: 1
   _isSwapAble: 1
-  _hitCondition: 44
-  _hitEffect: 12
+  _hitCondition: 20
+  _hitEffect: 0
   _mission: 0
   _hitChangeGimmick: {fileID: 0}

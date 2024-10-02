@@ -57,6 +57,24 @@ namespace JH
                 return true;
             }
 
+            public static bool Verification(int pivotIndex, Vector2Int direction)
+            {
+                int resultX = (pivotIndex % ConstantData.MAX_GRID_WIDTH_SIZE) + direction.x;
+                int resultY = (pivotIndex / ConstantData.MAX_GRID_WIDTH_SIZE) + direction.y;
+
+                if (resultX < 0 || resultX >= ConstantData.MAX_GRID_WIDTH_SIZE)
+                {
+                    return false;
+                }
+
+                if (resultY < 0 || resultY >= ConstantData.MAX_GRID_HEIGHT_SIZE)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
             public static Vector2Int IndexConvertToPos(int index)
             {
                 return new Vector2Int(index % ConstantData.MAX_GRID_WIDTH_SIZE, index / ConstantData.MAX_GRID_WIDTH_SIZE);

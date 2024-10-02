@@ -22,6 +22,30 @@ namespace JH
                 }
             }
 
+            public void ReduceMission(MissionType type)
+            {
+                for(int i = 0; i < _missions.Length; ++i)
+                {
+                    if (_missions[i].Type == type && !_missions[i].IsClear)
+                    {
+                        _missions[i].ReduceMissionNum();
+                        if(IsAllMissionClear())
+                        {
+                            GameManager.Instance.AddGameState(GameManager.GameState.Done_GameEnd);
+                        }
+                    }
+                }
+            }
+
+            private bool IsAllMissionClear()
+            {
+                bool isAllClear = true;
+                for(int i = 0; i < _missions.Length && isAllClear; ++i)
+                {
+                    isAllClear = _missions[i].IsClear;
+                }
+                return isAllClear;
+            }
         }
     }
 }

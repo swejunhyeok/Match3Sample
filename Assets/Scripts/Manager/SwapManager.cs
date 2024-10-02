@@ -84,7 +84,7 @@ namespace JH
                     }
                     else
                     {
-
+                        GameManager.Instance.Grid.ReverseSwap(_swapDatas[i].Pivot.Position, _swapDatas[i].Target.Position);
                     }
                     GameManager.Instance.RemoveGameState(GameManager.GameState.Processing_UserInput);
                     _swapDatas.RemoveAt(i);
@@ -129,15 +129,31 @@ namespace JH
                 {
                     if (_swapDatas[i].Pivot.Position == pos)
                     {
-                        _swapDatas[i].Pivot.IsContainMatch = true;
+                        _swapDatas[i].Pivot.IsMoveCompleted = true;
                     }
                     if (_swapDatas[i].Target.Position == pos)
                     {
-                        _swapDatas[i].Target.IsContainMatch = true;
+                        _swapDatas[i].Target.IsMoveCompleted = true;
                     }
                 }
                 CheckSwapData();
+                MatchManager.Instance.SwapMatchCheck(pos);
+            }
 
+            public bool IsContainSwapData(Vector2Int pos)
+            {
+                for(int i = 0; i < _swapDatas.Count; ++i)
+                {
+                    if (_swapDatas[i].Pivot.Position == pos)
+                    {
+                        return true;
+                    }
+                    if (_swapDatas[i].Target.Position == pos)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             #endregion

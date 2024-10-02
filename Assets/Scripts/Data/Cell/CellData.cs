@@ -36,6 +36,7 @@ namespace JH
             private int _index;
             public int Index => _index;
 
+            [SerializeField]
             private CellData[] _fourDirectionCell = new CellData[4];
             public CellData[] FourDirectionCell => _fourDirectionCell;
             public CellData UpCell => _fourDirectionCell[CellIndex.UpIndex];
@@ -43,6 +44,7 @@ namespace JH
             public CellData LeftCell => _fourDirectionCell[CellIndex.LeftIndex];
             public CellData RightCell => _fourDirectionCell[CellIndex.RightIndex];
 
+            [SerializeField]
             private CellData[] _fourDiagonalCell = new CellData[4];
             public CellData[] FourDiagonalCell => _fourDiagonalCell;
             public CellData UpLeftCell => _fourDiagonalCell[CellIndex.UpLeftIndex];

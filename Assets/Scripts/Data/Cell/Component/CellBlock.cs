@@ -63,6 +63,22 @@ namespace JH
                     return true;
                 }
             }
+            
+            public bool HasFixMiddleBlock
+            {
+                get
+                {
+                    if(!HasMiddleBlock)
+                    {
+                        return false;
+                    }
+                    if(!MiddleBlock.HasAttribute)
+                    {
+                        return false;
+                    }
+                    return !MiddleBlock.Attribute.IsMoveAble;
+                }
+            }
 
             #endregion
 
@@ -75,6 +91,7 @@ namespace JH
             public BlockData MiddleBlock => _middleBlock;
             public bool HasMiddleBlock => MiddleBlock != null;
             public BlockType MiddleBlockType => HasMiddleBlock && MiddleBlock.HasAttribute ? MiddleBlock.Attribute.Type : BlockType.None;
+            public bool HasMiddleGimmickBlock => HasMiddleBlock && MiddleBlock.HasAttribute && MiddleBlock.Attribute.Kind >= BlockKind.GimmickBlock;
 
             public BlockData TopBlock => _topBlock;
             public bool HasTopBlock => TopBlock != null;
@@ -177,14 +194,14 @@ namespace JH
                 AddBlock(block);
             }
             
-            public void AddBlock(BlockData block, bool isSetPivotCell = true)
+            public void AddBlock(BlockData block, bool isResetPosition = true)
             {
                 if(block == null)
                 {
                     return;
                 }
                 AddLayerBlock(block);
-                block.ChangePivotCell(Cell);
+                block.ChangePivotCell(Cell, isResetPosition);
             }
 
             public void AddLayerBlock(BlockData block)
@@ -248,6 +265,8 @@ namespace JH
 
             #region Match
 
+            public BlockType ReservationMakeSpecialBlock = BlockType.None;
+
             public int MatchPreprocessing(bool isSwap = false)
             {
                 int matchCandidateValue = 0;
@@ -267,16 +286,114 @@ namespace JH
                 {
                     return matchCandidateValue;
                 }
+                if(MiddleBlock.State.State != BlockState.BlockStateType.Idle)
+                {
+                    return matchCandidateValue;
+                }
                 return MiddleBlock.Match.MatchPreprocessing(isSwap);
             }
 
             public BlockMatch.MatchData MatchCheck(BlockMatch.BlockMatchType type, bool isSwap = false)
             {
-                if(!HasMiddleBlock || !MiddleBlock.HasMatch)
+                if(!HasMiddleBlock || !MiddleBlock.HasMatch || (!isSwap && MiddleBlock.IsWillBeUnderMove))
                 {
                     return new BlockMatch.MatchData() { Type = BlockMatch.BlockMatchType.None };
                 }
                 return MiddleBlock.Match.MatchSearch(type, isSwap);
+            }
+
+            #endregion
+
+            #region Move
+
+            public void BlockMove(BlockMove.MoveType type)
+            {
+                if(!MoveVerification())
+                {
+                    return;
+                }
+                MiddleBlock.Move.Move(type);
+            }
+            public void BlockMove(BlockMove.MoveType type, Vector3 targetPosition)
+            {
+                if (!MoveVerification())
+                {
+                    return;
+                }
+                MiddleBlock.Move.Move(type, targetPosition);
+            }
+            private bool MoveVerification()
+            {
+                if(!Cell.IsWorkCell)
+                {
+                    return false;
+                }
+                if(!HasMiddleBlock)
+                {
+                    return false;
+                }
+                if(!MiddleBlock.HasMove)
+                {
+                    return false;
+                }
+                if(MiddleBlock.State.State != BlockState.BlockStateType.Idle && MiddleBlock.State.State != BlockState.BlockStateType.Match)
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            #endregion
+
+            #region Hit
+
+            public void Hit(
+                HitConditionType hitCondition, 
+                LayerType hitLayer,
+                BlockType hitBlock,
+                List<BlockData> hitBlocks = null,
+                List<Vector2Int> hitPositions = null,
+                System.Action successCallback = null)
+            {
+                if(!Cell.IsWorkCell)
+                {
+                    return;
+                }
+                if(HighestBlock == null)
+                {
+                    return;
+                }
+
+                if((hitLayer & LayerType.Top) == LayerType.Top)
+                {
+                    if(HighestBlock == TopBlock)
+                    {
+                        TopBlock.Cache.HitBlocks = hitBlocks;
+                        TopBlock.Cache.HitPositions = hitPositions;
+                        TopBlock.Hit.Hit(hitCondition, hitBlock, successCallback);
+                        return;
+                    }
+                }
+                if((hitLayer & LayerType.Middle) == LayerType.Middle)
+                {
+                    if(HighestBlock == MiddleBlock)
+                    {
+                        MiddleBlock.Cache.HitBlocks = hitBlocks;
+                        MiddleBlock.Cache.HitPositions = hitPositions;
+                        MiddleBlock.Hit.Hit(hitCondition, hitBlock, successCallback);
+                        return;
+                    }
+                }
+                if((hitLayer & LayerType.Bottom) == LayerType.Bottom)
+                {
+                    if(HighestBlock == BottomBlock)
+                    {
+                        BottomBlock.Cache.HitBlocks = hitBlocks;
+                        BottomBlock.Cache.HitPositions = hitPositions;
+                        BottomBlock.Hit.Hit(hitCondition, hitBlock, successCallback);
+                        return;
+                    }
+                }
             }
 
             #endregion

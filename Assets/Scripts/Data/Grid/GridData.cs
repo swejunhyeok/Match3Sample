@@ -80,7 +80,7 @@ namespace JH
                             targetCell = GetCell(movePos);
                             if (CellIndex.Verification(movePos, true) && targetCell != null && targetCell.IsWorkCell)
                             {
-                                fourDirectionCell[i] = targetCell;
+                                fourDiagonalCell[i] = targetCell;
                             }
                         }
 
@@ -121,6 +121,41 @@ namespace JH
 
             #endregion
 
+            #region General
+
+            private void Update()
+            {
+                EmptyCellFill();
+            }
+
+            #endregion
+
+            #region Empty cell fill
+
+            private void EmptyCellFill()
+            {
+                if(GameManager.Instance.IsContainState(GameManager.GameState.GameStart))
+                {
+                    return;
+                }
+                if(GameManager.Instance.IsContainState(GameManager.GameState.Loading_GridData))
+                {
+                    return;
+                }
+                for(int y = 0; y < ConstantData.MAX_GRID_HEIGHT_SIZE; ++y)
+                {
+                    for(int x = 0; x < ConstantData.MAX_GRID_WIDTH_SIZE; ++x)
+                    {
+                        if(GetCell(x, y) != null)
+                        {
+                            GetCell(x, y).Move.BlockMoveFunc();
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
             #region Input
 
             public bool VerificationSwap(Vector2Int pivotPos, Vector2Int direction)
@@ -158,6 +193,35 @@ namespace JH
                 return true;
             }
 
+            public void ReverseSwap(Vector2Int pivotPos, Vector2Int targetPos)
+            {
+                CellData pivotCell = GetCell(pivotPos);
+                CellData targetCell = GetCell(targetPos);
+                if (pivotCell.Block.HasSwapAbleBlock)
+                {
+                    pivotCell.State.AddHoldState();
+                    targetCell.State.AddHoldState();
+                    pivotCell.Block.SwapAbleBlock.Cache.MoveEndAction += () =>
+                    {
+                        pivotCell.State.ReduceHoldState();
+                        targetCell.State.ReduceHoldState();
+                    };
+                }
+                if (targetCell.Block.HasSwapAbleBlock)
+                {
+                    pivotCell.State.AddHoldState();
+                    targetCell.State.AddHoldState();
+                    targetCell.Block.SwapAbleBlock.Cache.MoveEndAction += () =>
+                    {
+                        pivotCell.State.ReduceHoldState();
+                        targetCell.State.ReduceHoldState();
+                    };
+                }
+                ChangeMoveAbleCell(pivotPos, targetPos);
+                pivotCell.Block.BlockMove(BlockMove.MoveType.ReverseSwap);
+                targetCell.Block.BlockMove(BlockMove.MoveType.ReverseSwap);
+            }
+
             public void InputSwap(Vector2Int pivotPos, Vector2Int direction)
             {
                 CellData pivotCell = GetCell(pivotPos);
@@ -187,8 +251,40 @@ namespace JH
                         targetCell.State.ReduceHoldState();
                     };
                 }
+                ChangeMoveAbleCell(pivotPos, pivotPos + direction);
+                pivotCell.Block.BlockMove(BlockMove.MoveType.Swap);
+                targetCell.Block.BlockMove(BlockMove.MoveType.Swap);
+                SwapManager.Instance.AddSwapInfo(pivotPos, pivotPos + direction, pivotCell.Block.HasMiddleGimmickBlock, targetCell.Block.HasMiddleGimmickBlock);
+            }
 
-
+            private void ChangeMoveAbleCell(Vector2Int pivotPos, Vector2Int targetPos)
+            {
+                BlockData pivotBlock = null;
+                BlockData targetBlock = null;
+                if(GetCell(pivotPos).Block.HasSwapAbleBlock)
+                {
+                    pivotBlock = GetCell(pivotPos).Block.MiddleBlock;
+                }
+                if(GetCell(targetPos).Block.HasSwapAbleBlock)
+                {
+                    targetBlock = GetCell(targetPos).Block.MiddleBlock;
+                }
+                if (pivotBlock != null)
+                {
+                    pivotBlock.RemoveCell();
+                }
+                if(targetBlock != null)
+                {
+                    targetBlock.RemoveCell();
+                }
+                if(targetBlock != null)
+                {
+                    GetCell(pivotPos).Block.AddBlock(targetBlock, false);
+                }
+                if(pivotBlock != null)
+                {
+                    GetCell(targetPos).Block.AddBlock(pivotBlock, false);
+                }
             }
 
             #endregion

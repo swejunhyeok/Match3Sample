@@ -99,7 +99,7 @@ namespace JH
                     {
                         return false;
                     }
-                    if(PivotCell.Block.HasMiddleBlock)
+                    if(PivotCell.DownCell.Block.HasMiddleBlock)
                     {
                         return false;
                     }
@@ -175,7 +175,7 @@ namespace JH
 
             #endregion
 
-            #region Cell init
+            #region Data control
 
             public void SetAttribute(BlockType type)
             {
@@ -200,10 +200,17 @@ namespace JH
             public void ChangePivotCell(CellData pivotCell, bool isResetPosition = true)
             {
                 _pivotCell = pivotCell;
+                transform.parent = _pivotCell.transform;
                 if(isResetPosition)
                 {
                     TrBlock.localPosition = Vector3.zero;
                 }
+            }
+
+            public void RemoveCell()
+            {
+                _pivotCell.Block.PopBlock(this);
+                _pivotCell = null;
             }
 
             #endregion

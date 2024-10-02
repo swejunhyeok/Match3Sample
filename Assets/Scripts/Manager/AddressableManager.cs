@@ -51,6 +51,27 @@ namespace JH
             }
             #endregion
 
+            #region Mission attribute
+
+            private Dictionary<int, MissionAttribute> _dicMissionAttributes = new Dictionary<int, MissionAttribute>();
+            public MissionAttribute GetMissionAttribute(MissionType type)
+            {
+                int typeId = (int)type;
+                if( _dicMissionAttributes.ContainsKey(typeId))
+                {
+                    return _dicMissionAttributes[typeId];
+                }
+
+                var op = Addressables.LoadAssetAsync<MissionAttribute>($"{type}_m");
+                MissionAttribute missionAttribute = op.WaitForCompletion();
+
+                _dicMissionAttributes.Add(typeId, missionAttribute);
+
+                return missionAttribute;
+            }
+
+            #endregion
+
         }
     }
 }

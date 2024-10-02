@@ -50,10 +50,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cellType: 0
   _pos: {x: 0, y: 0}
-  _cState: {fileID: 3213173251249137638}
-  _cBlock: {fileID: 2187171209392888562}
-  _cMove: {fileID: 6313808946329385980}
-  _cGenerate: {fileID: 7814353409838077423}
+  _index: 0
+  _state: {fileID: 3213173251249137638}
+  _block: {fileID: 2187171209392888562}
+  _move: {fileID: 6313808946329385980}
+  _generate: {fileID: 7814353409838077423}
 --- !u!114 &2187171209392888562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +71,7 @@ MonoBehaviour:
   _bottomBlock: {fileID: 0}
   _middleBlock: {fileID: 0}
   _topBlock: {fileID: 0}
+  ReservationMakeSpecialBlock: 0
 --- !u!114 &6313808946329385980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cell: {fileID: 7212706935762334237}
+  _cntHold: 0
 --- !u!114 &7814353409838077423
 MonoBehaviour:
   m_ObjectHideFlags: 0

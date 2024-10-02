@@ -20,7 +20,11 @@ namespace JH
             BlockPurple,
 
             ___SpecialBlock___ = 1001,
-
+            Prop,
+            RocketTransverse,
+            RocketVertical,
+            Bomb,
+            Rainbow,
 
             ___Gimmick___ = 2001,
             Gimmick_1,
@@ -57,12 +61,6 @@ namespace JH
             Purple,
         }
 
-        public enum MissionType
-        {
-            None,
-            PaperBox
-        }
-
         [System.Flags]
         public enum HitConditionType
         {
@@ -72,6 +70,7 @@ namespace JH
             Powerup = 0x004,
             Match = 0x008,
             Touch = 0x010,
+            Merge = 0x020,
         }
 
         [System.Flags]
@@ -81,6 +80,7 @@ namespace JH
             Change = 0x001,
             ReduceMission = 0x002,
             Destroy = 0x004,
+            ArroundHit = 0x008,
         }
 
         [CreateAssetMenu(fileName = "Block Attribute", menuName = "JH/Match3Sample/Block Attribute")]

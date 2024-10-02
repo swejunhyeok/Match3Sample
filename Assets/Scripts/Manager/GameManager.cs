@@ -48,6 +48,7 @@ namespace JH
                     if(_move != value)
                     {
                         _move = value;
+                        UIManager.Instance.MoveNumText.text = Move.ToString();
                     }
                 }
             }
@@ -145,7 +146,7 @@ namespace JH
             }
 
             [SerializeField]
-            private GameState _state;
+            private GameState _state = GameState.GameStart;
             public GameState State => _state;
 
             public void AddGameState(GameState state)
@@ -156,6 +157,29 @@ namespace JH
             public void RemoveGameState(GameState state)
             {
                 _state &= ~state;
+            }
+
+            public bool IsContainState(GameState state)
+            {
+                return (_state & state) == state;
+            }
+
+            #endregion
+
+            #region Game time
+
+            public int _gameTimeVersion = 0;
+
+            public GameTimeData GameTime
+            {
+                get
+                {
+                    return new GameTimeData()
+                    {
+                        DeltaTime = (int)Time.realtimeSinceStartup,
+                        Version = _gameTimeVersion
+                    };
+                }
             }
 
             #endregion
@@ -183,6 +207,8 @@ namespace JH
 
             private void LoadData()
             {
+                RemoveGameState(GameState.GameStart);
+                AddGameState(GameState.Loading_GridData);
                 TextAsset mapFile = Resources.Load<TextAsset>("LevelData/Sample");
                 if(mapFile == null)
                 {
@@ -200,6 +226,7 @@ namespace JH
                 _grid.LoadGridData(gridRoot);
 
                 MissionManager.Instance.LoadMissions(gridRoot[ConstantData.MAP_KEY_MISSION_LIST]);
+                RemoveGameState(GameState.Loading_GridData);
             }
 
             #endregion
@@ -211,7 +238,7 @@ namespace JH
 
             private Vector2Int TouchPosConvertToCellPos(Vector2 touchPos)
             {
-                Vector2 touchPositionOverGrid = touchPos - GridPosition + (Vector2.one / 2.0f);
+                Vector2 touchPositionOverGrid = touchPos - GridPosition - new Vector2(-4.5f, -5.5f);
                 if (touchPositionOverGrid.x >= 0 && touchPositionOverGrid.y >= 0)
                 {
                     int x = (int)touchPositionOverGrid.x;
@@ -231,8 +258,16 @@ namespace JH
             private void InputTouch(Vector2 touchPosition, TouchPhase type)
             {
                 Vector2Int cellPosition = TouchPosConvertToCellPos(touchPosition);
-
                 if (cellPosition == CellIndex.None)
+                {
+                    _targetCellPos = CellIndex.None;
+                    return;
+                }
+
+                if(IsContainState(GameState.Processing_UserInput) || 
+                    IsContainState(GameState.Loading_GridData) ||
+                    IsContainState(GameState.GameStart)||
+                    IsContainState(GameState.Done_GameEnd))
                 {
                     _targetCellPos = CellIndex.None;
                     return;
@@ -277,7 +312,7 @@ namespace JH
                     return;
                 }
 
-
+                //OnUsetInput();
                 _targetCellPos = CellIndex.None;
             }
 
@@ -329,7 +364,14 @@ namespace JH
                 }
 
                 Grid.InputSwap(_targetCellPos, direction);
+                OnUsetInput();
                 _targetCellPos = CellIndex.None;
+            }
+
+            public void OnUsetInput()
+            {
+                AddGameState(GameState.Processing_UserInput);
+                ++_gameTimeVersion;
             }
 
             #endregion

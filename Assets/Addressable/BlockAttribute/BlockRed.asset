@@ -22,7 +22,7 @@ MonoBehaviour:
   _isMatchAble: 1
   _isMoveAble: 1
   _isSwapAble: 1
-  _hitCondition: 12
-  _hitEffect: 4
+  _hitCondition: 44
+  _hitEffect: 12
   _mission: 0
   _hitChangeGimmick: {fileID: 0}

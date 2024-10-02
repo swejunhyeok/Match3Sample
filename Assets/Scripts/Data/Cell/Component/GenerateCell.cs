@@ -36,7 +36,7 @@ namespace JH
                 }
             }
 
-            public BlockType GetBlockType()
+            private BlockType GetBlockType()
             {
                 int randomValue = Random.Range(0, _totalWeight);
 
@@ -49,6 +49,7 @@ namespace JH
                     if(randomValue < summaryValue)
                     {
                         selectIndex = i;
+                        break;
                     }
                 }
 
@@ -61,6 +62,16 @@ namespace JH
                     return BlockType.None;
                 }
                 return _generateDatas[selectIndex].Type;
+            }
+
+            public void GenerateObject()
+            {
+                if(Cell.Block.HasMiddleBlock)
+                {
+                    return;
+                }
+                BlockType type = GetBlockType();
+                Cell.Block.CreateBlock(AddressableManager.Instance.GetBlockAttribute(type).Kind, type);
             }
         }
     }

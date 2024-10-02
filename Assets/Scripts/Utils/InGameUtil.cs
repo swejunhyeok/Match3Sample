@@ -10,6 +10,14 @@ namespace JH
     {
         public static class InGameUtil
         {
+            public static float GetTimeDepth(float time)
+            {
+                if(time == 0)
+                {
+                    return 0;
+                }
+                return 1.0f / time;
+            }
             public static int ParseInt(ref LitJson.JsonData root, string key, int defaultValue = 0) => root.Keys.Contains(key)? (int) root[key] : defaultValue;
         }
     }

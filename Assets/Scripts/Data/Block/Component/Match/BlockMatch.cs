@@ -37,7 +37,7 @@ namespace JH
             private void FindSameColorBlock(List<CellData> verticalMatchCell, List<CellData> horizontalMatchCell, bool isSwap, out int[] lastMatchCellIndex )
             {
                 lastMatchCellIndex = new int[4] { -1, -1, -1, -1 };
-                if(Block.PivotCell)
+                if(Block.PivotCell == null)
                 {
                     return;
                 }
@@ -663,6 +663,10 @@ namespace JH
                     return false;
                 }
                 if (!isSwap && cell.Block.MiddleBlock.IsWillBeUnderMove)
+                {
+                    return false;
+                }
+                if(cell.Block.MiddleBlock.State.State != BlockState.BlockStateType.Idle)
                 {
                     return false;
                 }

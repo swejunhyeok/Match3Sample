@@ -126,6 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8430789457945365987}
   - component: {fileID: 4344275330905727663}
+  - component: {fileID: 3254939789173869098}
   - component: {fileID: 66554154502173634}
   - component: {fileID: 9080934032585086458}
   - component: {fileID: 8777540614160306367}
@@ -168,11 +169,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attribute: {fileID: 0}
   _pivotCell: {fileID: 0}
-  _bHit: {fileID: 66554154502173634}
-  _bMatch: {fileID: 9080934032585086458}
-  _bMove: {fileID: 6098512795798351911}
-  _bState: {fileID: 6867841410460591247}
-  _bSprite: {fileID: 8777540614160306367}
+  _cache: {fileID: 3254939789173869098}
+  _hit: {fileID: 66554154502173634}
+  _match: {fileID: 9080934032585086458}
+  _move: {fileID: 6098512795798351911}
+  _state: {fileID: 6867841410460591247}
+  _sprite: {fileID: 8777540614160306367}
+--- !u!114 &3254939789173869098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992429635843114455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c847cccf51362ec469dbca1746d7327e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _block: {fileID: 4344275330905727663}
+  HitBlocks: []
+  HitPositions: []
 --- !u!114 &66554154502173634
 MonoBehaviour:
   m_ObjectHideFlags: 0
