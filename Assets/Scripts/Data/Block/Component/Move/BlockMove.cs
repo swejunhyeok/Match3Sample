@@ -33,7 +33,7 @@ namespace JH
                 StartCoroutine(MoveSpecificPosition(type, targetPosition));
             }
 
-            protected IEnumerator MoveLocalPositionZero(MoveType type, float duration = 0.5f)
+            protected IEnumerator MoveLocalPositionZero(MoveType type, float duration = 0.25f)
             {
                 float timeDepth = InGameUtil.GetTimeDepth(duration);
                 float deltaSum = 0f;
@@ -52,7 +52,7 @@ namespace JH
                 OnMoveEnd(type);
             }
 
-            protected IEnumerator MoveSpecificPosition(MoveType type, Vector3 targetPosition, float duration = 0.5f)
+            protected IEnumerator MoveSpecificPosition(MoveType type, Vector3 targetPosition, float duration = 0.25f)
             {
                 float timeDepth = InGameUtil.GetTimeDepth(duration);
                 float deltaSum = 0f;

@@ -60,6 +60,10 @@ namespace JH
                     {
                         return false;
                     }
+                    if(SwapAbleBlock.State.State != BlockState.BlockStateType.Idle)
+                    {
+                        return false;
+                    }
                     return true;
                 }
             }
@@ -202,6 +206,10 @@ namespace JH
                 }
                 AddLayerBlock(block);
                 block.ChangePivotCell(Cell, isResetPosition);
+                if(block.Attribute.Color != ColorType.None)
+                {
+                    ++GameManager.Instance.ColorBlockNum[(int)block.Attribute.Color - 1];
+                }
             }
 
             public void AddLayerBlock(BlockData block)
@@ -246,8 +254,11 @@ namespace JH
                 {
                     return;
                 }
-
-                if(BottomBlock == block)
+                if (block.Attribute.Color != ColorType.None)
+                {
+                    --GameManager.Instance.ColorBlockNum[(int)block.Attribute.Color - 1];
+                }
+                if (BottomBlock == block)
                 {
                     _bottomBlock = null;
                 }

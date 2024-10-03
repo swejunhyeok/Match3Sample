@@ -80,7 +80,7 @@ namespace JH
                         MatchFinish(matchData);
                     }
                 }
-                for(int i = 0; i < bombCandidate.Count; ++i)
+                for (int i = 0; i < bombCandidate.Count; ++i)
                 {
                     BlockMatch.MatchData matchData = GameManager.Instance.GetCell(bombCandidate[i]).Block.MatchCheck(BlockMatch.BlockMatchType.Bomb);
                     if (matchData.Type != BlockMatch.BlockMatchType.None)
@@ -104,15 +104,15 @@ namespace JH
                         MatchFinish(matchData);
                     }
                 }
-                //for(int i = 0; i < propCandidate.Count; ++i)
+                //for (int i = 0; i < propCandidate.Count; ++i)
                 //{
-                //    BlockMatch.MatchData matchData = GameManager.Instance.GetCell(rainbowCandidate[i]).Block.MatchCheck(BlockMatch.BlockMatchType.Prop);
+                //    BlockMatch.MatchData matchData = GameManager.Instance.GetCell(propCandidate[i]).Block.MatchCheck(BlockMatch.BlockMatchType.Prop);
                 //    if (matchData.Type != BlockMatch.BlockMatchType.None)
                 //    {
                 //        MatchFinish(matchData);
                 //    }
                 //}
-                for(int i = 0; i < threeCandidate.Count; ++i)
+                for (int i = 0; i < threeCandidate.Count; ++i)
                 {
                     BlockMatch.MatchData matchData = GameManager.Instance.GetCell(threeCandidate[i]).Block.MatchCheck(BlockMatch.BlockMatchType.Three);
                     if (matchData.Type != BlockMatch.BlockMatchType.None)
@@ -133,10 +133,10 @@ namespace JH
                 BlockMatch.MatchData propData = new BlockMatch.MatchData();
                 BlockMatch.MatchData threeData = new BlockMatch.MatchData();
 
-                if(candidateValue >= 5)
+                if (candidateValue >= 5)
                 {
                     rainbowMatchData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.Rainbow, true);
-                    if(rainbowMatchData.Type != BlockMatch.BlockMatchType.None)
+                    if (rainbowMatchData.Type != BlockMatch.BlockMatchType.None)
                     {
                         SwapManager.Instance.SetMatchContain(pos);
                     }
@@ -144,33 +144,33 @@ namespace JH
                 if (candidateValue >= 4)
                 {
                     bombMatchData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.Bomb, true);
-                    if(bombMatchData.Type != BlockMatch.BlockMatchType.None)
+                    if (bombMatchData.Type != BlockMatch.BlockMatchType.None)
                     {
                         SwapManager.Instance.SetMatchContain(pos);
                     }
                 }
-                if(candidateValue >= 3)
+                if (candidateValue >= 3)
                 {
                     rocketTransverseData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.RocketTransverse, true);
-                    if(rocketTransverseData.Type != BlockMatch.BlockMatchType.None)
+                    if (rocketTransverseData.Type != BlockMatch.BlockMatchType.None)
                     {
                         SwapManager.Instance.SetMatchContain(pos);
                     }
                     rocketVerticalData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.RocketVertical, true);
-                    if(rocketVerticalData.Type != BlockMatch.BlockMatchType.None)
+                    if (rocketVerticalData.Type != BlockMatch.BlockMatchType.None)
                     {
                         SwapManager.Instance.SetMatchContain(pos);
                     }
                 }
-                //if(candidateValue >= 2)
+                //if (candidateValue >= 2)
                 //{
                 //    propData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.Prop, true);
-                //    if(propData.Type != BlockMatch.BlockMatchType.None)
+                //    if (propData.Type != BlockMatch.BlockMatchType.None)
                 //    {
                 //        SwapManager.Instance.SetMatchContain(pos);
                 //    }
                 //}
-                if(candidateValue >= 1)
+                if (candidateValue >= 1)
                 {
                     threeData = cellBlock.MatchCheck(BlockMatch.BlockMatchType.Three, true);
                     if(threeData.Type != BlockMatch.BlockMatchType.None)
@@ -181,27 +181,27 @@ namespace JH
 
                 SwapManager.Instance.SetMatchCheckCompleted(pos);
 
-                if(rainbowMatchData.Type != BlockMatch.BlockMatchType.None)
+                if (rainbowMatchData.Type != BlockMatch.BlockMatchType.None)
                 {
                     MatchFinish(rainbowMatchData, true);
                 }
-                if(bombMatchData.Type != BlockMatch.BlockMatchType.None)
+                if (bombMatchData.Type != BlockMatch.BlockMatchType.None)
                 {
                     MatchFinish(bombMatchData, true);
                 }
-                if(rocketTransverseData.Type != BlockMatch.BlockMatchType.None)
+                if (rocketTransverseData.Type != BlockMatch.BlockMatchType.None)
                 {
                     MatchFinish(rocketTransverseData, true);
                 }
-                if(rocketVerticalData.Type != BlockMatch.BlockMatchType.None)
+                if (rocketVerticalData.Type != BlockMatch.BlockMatchType.None)
                 {
                     MatchFinish(rocketVerticalData, true);
                 }
-                //if(propData.Type != BlockMatch.BlockMatchType.None)
+                //if (propData.Type != BlockMatch.BlockMatchType.None)
                 //{
                 //    MatchFinish(propData, true);
                 //}
-                if(threeData.Type != BlockMatch.BlockMatchType.None)
+                if (threeData.Type != BlockMatch.BlockMatchType.None)
                 {
                     MatchFinish(threeData, true);
                 }
@@ -235,25 +235,29 @@ namespace JH
                         for (int i = 0; i < matchData.MatchInfos.Count; ++i)
                         {
                             CellData cell = matchData.MatchInfos[i].PivotCell;
-                            if(cell.Pos == pivotPos)
-                            {
-                                if(cell.Block.HasMiddleBlock)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.ReservationMakeSpecialBlock = makeType;
-                                cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
-                            }
-                            else
-                            {
-                                if (cell.Block.HasMiddleBlock)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
-                            }
+                            
+                            cell.Block.Hit(HitConditionType.Match, LayerType.Middle, BlockType.None, hitBlock, hitPosition);
+
+                            // Special block 积己 内靛.
+                            //if(cell.Pos == pivotPos)
+                            //{
+                            //    if(cell.Block.HasMiddleBlock)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.ReservationMakeSpecialBlock = makeType;
+                            //    cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
+                            //}
+                            //else
+                            //{
+                            //    if (cell.Block.HasMiddleBlock)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
+                            //}
                         }
                         break;
                     }
@@ -298,25 +302,29 @@ namespace JH
                         for (int i = 0; i < matchCell.Count; ++i)
                         {
                             CellData cell = matchCell[i];
-                            if (cell.Pos == pivotPos)
-                            {
-                                cell.Block.ReservationMakeSpecialBlock = BlockType.Prop;
-                                if (cell.Block.MiddleBlock != null)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
-                            }
-                            else
-                            {
-                                if (cell.Block.MiddleBlock != null)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
-                            }
+
+                            cell.Block.Hit(HitConditionType.Match, LayerType.Middle, BlockType.None, hitBlock, hitPosition);
+
+                            // Special block 积己 内靛.
+                            //if (cell.Pos == pivotPos)
+                            //{
+                            //    cell.Block.ReservationMakeSpecialBlock = BlockType.Prop;
+                            //    if (cell.Block.MiddleBlock != null)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
+                            //}
+                            //else
+                            //{
+                            //    if (cell.Block.MiddleBlock != null)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
+                            //}
                         }
                         break;
                     }
@@ -417,25 +425,29 @@ namespace JH
                         for (int i = 0; i < matchCell.Count; ++i)
                         {
                             CellData cell = matchCell[i];
-                            if (cell.Pos == pivotPos)
-                            {
-                                cell.Block.ReservationMakeSpecialBlock = type;
-                                if (cell.Block.MiddleBlock != null)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
-                            }
-                            else
-                            {
-                                if (cell.Block.MiddleBlock != null)
-                                {
-                                    cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
-                                    cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
-                                }
-                                cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
-                            }
+
+                            cell.Block.Hit(HitConditionType.Match, LayerType.Middle, BlockType.None, hitBlock, hitPosition);
+
+                            // Special block 积己 内靛.
+                            //if (cell.Pos == pivotPos)
+                            //{
+                            //    cell.Block.ReservationMakeSpecialBlock = type;
+                            //    if (cell.Block.MiddleBlock != null)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.BlockMove(BlockMove.MoveType.CreateSpecialBlock, pivotTrPosition);
+                            //}
+                            //else
+                            //{
+                            //    if (cell.Block.MiddleBlock != null)
+                            //    {
+                            //        cell.Block.MiddleBlock.Cache.HitBlocks = hitBlock;
+                            //        cell.Block.MiddleBlock.Cache.HitPositions = hitPosition;
+                            //    }
+                            //    cell.Block.BlockMove(BlockMove.MoveType.Merge, pivotTrPosition);
+                            //}
                         }
                         break;
                     }

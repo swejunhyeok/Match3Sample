@@ -49,6 +49,7 @@ namespace JH
             Bottom = 0x002,
             Middle = 0x004,
             Top = 0x008,
+            Everything = 0xFFF,
         }
 
         public enum ColorType

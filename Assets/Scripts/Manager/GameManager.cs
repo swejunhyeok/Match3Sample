@@ -60,6 +60,28 @@ namespace JH
                 get => _colorBlockNum;
                 set => _colorBlockNum = value;
             }
+            public int MaxColorBlockIndex
+            {
+                get
+                {
+                    int num = int.MinValue;
+                    int index = 0;
+
+                    for(int i = 0; i < ColorBlockNum.Length; ++i)
+                    {
+                        if(IsExistRunningRainbowEffect(i))
+                        {
+                            continue;
+                        }
+                        if(num > ColorBlockNum[i])
+                        {
+                            index = i;
+                        }
+                    }
+
+                    return index;
+                }
+            }
 
             [SerializeField]
             private int _waitingSwapNum = 0;
